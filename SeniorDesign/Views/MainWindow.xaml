@@ -13,6 +13,14 @@
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Return to Surface" Command="{Binding ReturnToSurfaceCommand}" Width="100" Margin="0,5,0,5"/>
+                <Slider x:Name="ForwardSpeed"  Margin="0, 0, 0, 0" 
+                    Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
+                    Value="50" Minimum="0" Maximum="200" 
+                    SmallChange="1" LargeChange="10"
+                    TickPlacement="BottomRight" TickFrequency="10"/>
+                <TextBox Name="ForwardSpeedText" IsReadOnly="True">
+                    Forward Speed (%)
+                </TextBox>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -137,6 +137,8 @@ namespace SeniorDesign.ViewModel
 
         public ROVControlsViewModel()
         {
+            server = "";
+            port = 0;
             if (ConnectROV())
             {
                 StartDispatchTimer();
@@ -163,10 +165,11 @@ namespace SeniorDesign.ViewModel
 
         public void StartDispatchTimer()
         {
-            SendControlSignalDispatchTimer = new DispatcherTimer();
-            SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
-            SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            SendControlSignalDispatchTimer.Start();
+            // Uncomment to start dispatch timer.
+            //SendControlSignalDispatchTimer = new DispatcherTimer();
+            //SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
+            //SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            //SendControlSignalDispatchTimer.Start();
         }
 
         public void SendControlSignal(object sender, EventArgs e)
