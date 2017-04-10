@@ -5,12 +5,14 @@ using SeniorDesign.Models;
 using System.Windows.Threading;
 using System.Net.Sockets;
 using System.Web.Script.Serialization;
+using Vlc.DotNet.Wpf;
+using System.IO;
 
 namespace SeniorDesign.ViewModel
 {
     class ROVControlsViewModel
     {
-        #region properties
+        #region Properties
         //This setup might not work.
         private ControlBlock _block;
         public ControlBlock block
@@ -76,6 +78,34 @@ namespace SeniorDesign.ViewModel
                 _server = value;
             }
         }
+
+        private string _streamUrl;
+        public string streamUrl
+        {
+            get
+            {
+                return _streamUrl;
+            }
+            set
+            {
+                _streamUrl = value;
+            }
+        }
+
+        private Uri _ROVVideo;
+        public Uri ROVVideo
+        {
+            get
+            {
+                if(_ROVVideo == null) { _ROVVideo = new Uri(streamUrl); }
+                return _ROVVideo;
+            }
+            set
+            {
+                _ROVVideo = value;
+                //OnPropertyChanged("something");
+            }
+        }
         #endregion
 
         #region Commands
@@ -135,7 +165,7 @@ namespace SeniorDesign.ViewModel
 
         #endregion
 
-        public ROVControlsViewModel()
+        public ROVControlsViewModel(VlcControl ROVVideo)
         {
             server = "";
             port = 0;
@@ -200,5 +230,19 @@ namespace SeniorDesign.ViewModel
             stream.Close();
             connection.Close();
         }
+
+        public void StartVideoStream(VlcControl ROVStream)
+        {
+            //ROVStream.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
+            ROVStream.MediaPlayer.EndInit();
+            //ROVStream.MediaPlayer.Play(new Uri("url of your stream"));
+            ROVStream.MediaPlayer.Play(ROVVideo);
+        }
+
+        //private void OnVlcControlNeedsLibDirectory(object sender, VlcLibDirectoryNeededEventArgs e)
+        //{
+        //    // path to VLC installation (don't hardcode in real usage, that is just for example)
+        //    e.VlcLibDirectory = new DirectoryInfo(@"C:\Program Files (x86)\VideoLAN\VLC\");
+        //}
     }
 }
