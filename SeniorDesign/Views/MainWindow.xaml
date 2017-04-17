@@ -10,38 +10,40 @@
         WindowState="Maximized" d:DesignWidth="1400" d:DesignHeight="1100">
     <Grid>
         <!--<MediaElement Name="stream" Height="720" Width="1280" Margin="54,10,54,240" Source="{Binding ROVVideo}" ></MediaElement>-->
-        <wpf:VlcControl x:Name="ROVStream"/>
+        <!--<wpf:VlcControl x:Name="ROVStream"/>-->
         <StackPanel Margin="0,750,0,0" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Return to Surface" Command="{Binding ReturnToSurfaceCommand}" Width="100" Margin="0,5,0,5"/>
-                <Slider x:Name="ForwardSpeed"  Margin="0, 0, 0, 0" 
-                    Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    Value="0" Minimum="-100" Maximum="100" 
-                    SmallChange="10" LargeChange="50"
-                    TickPlacement="BottomRight" TickFrequency="10"/>
-                <TextBox Name="ForwardSpeedText" IsReadOnly="True">
-                    Forward Speed (%)
-                </TextBox>
-
-                <Slider x:Name="VerticalSpeed"  Margin="0, 0, 0, 0" 
-                    Width="100" Height="100" Orientation="Vertical" HorizontalAlignment="Left" 
-                    Value="0" Minimum="-100" Maximum="100" 
-                    SmallChange="10" LargeChange="50"
-                    TickPlacement="BottomRight" TickFrequency="10"/>
-                <TextBox Name="VerticalSpeedText" IsReadOnly="True">
-                    Vertical Speed (%)
-                </TextBox>
             </StackPanel>
             <StackPanel>
+                <TextBlock>
+                    CONTROLS
+                </TextBlock>
+                <Slider x:Name="ForwardSpeed"  Margin="0, 0, 0, 0" 
+                    Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
+                    Value="{Binding ElementName=ForwardSpeed, Path=ViewModel}" Minimum="-100" Maximum="100" 
+                    SmallChange="10" LargeChange="50"
+                    TickPlacement="BottomRight" TickFrequency="10"/>
+                <TextBlock>
+                    Forward Speed (%)
+                </TextBlock>
                 <Slider x:Name="TurningAngle"  Margin="0, 0, 0, 0" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
                     Value="0" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
                     TickPlacement="BottomRight" TickFrequency="10"/>
-                <TextBox Name="TurningAngleText" IsReadOnly="True">
-                    Left/Right
-                </TextBox>
+                <TextBlock>
+                    Left...................Right
+                </TextBlock>
+                <Slider x:Name="VerticalSpeed"  Margin="0, 0, 0, 0" 
+                    Width="100" Height="100" Orientation="Vertical" HorizontalAlignment="Left" 
+                    Value="0" Minimum="-100" Maximum="100" 
+                    SmallChange="10" LargeChange="50"
+                    TickPlacement="BottomRight" TickFrequency="10"/>
+                <TextBlock>
+                    Vertical Speed (%)
+                </TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>

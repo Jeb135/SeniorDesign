@@ -27,6 +27,19 @@ namespace SeniorDesign.ViewModel
             }
         }
 
+        private int _ForwardSpeed;
+        public int ForwardSpeed
+        {
+            get
+            {
+                return _ForwardSpeed;
+            }
+            set
+            {
+                _ForwardSpeed = value;
+            }
+        }
+
         private DispatcherTimer _SendControlSignalDispatchTimer;
         public DispatcherTimer SendControlSignalDispatchTimer
         {
@@ -165,6 +178,16 @@ namespace SeniorDesign.ViewModel
 
         #endregion
 
+        public ROVControlsViewModel()
+        {
+            server = "";
+            port = 0;
+            if (ConnectROV())
+            {
+                StartDispatchTimer();
+            }
+        }
+
         public ROVControlsViewModel(VlcControl ROVVideo)
         {
             server = "";
@@ -195,40 +218,40 @@ namespace SeniorDesign.ViewModel
 
         public void StartDispatchTimer()
         {
-            // Uncomment to start dispatch timer.
-            //SendControlSignalDispatchTimer = new DispatcherTimer();
-            //SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
-            //SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            //SendControlSignalDispatchTimer.Start();
+            //Uncomment to start dispatch timer.
+            SendControlSignalDispatchTimer = new DispatcherTimer();
+            SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
+            SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            SendControlSignalDispatchTimer.Start();
         }
 
         public void SendControlSignal(object sender, EventArgs e)
         {
             // Pack up the control block and send it off with TCP connection here.
-            TcpClient connection = new TcpClient(server, port);
+            //TcpClient connection = new TcpClient(server, port);
 
-            // Configure connection content.
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string message = serializer.Serialize(block);
-            //string message = System.Runtime.Serialization.JSON.stringify(block);
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+            //// Configure connection content.
+            //JavaScriptSerializer serializer = new JavaScriptSerializer();
+            //string message = serializer.Serialize(block);
+            ////string message = System.Runtime.Serialization.JSON.stringify(block);
+            //Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
-            NetworkStream stream = connection.GetStream();
+            //NetworkStream stream = connection.GetStream();
 
-            // Send the message to the connected TcpServer. 
-            stream.Write(data, 0, data.Length);
+            //// Send the message to the connected TcpServer. 
+            //stream.Write(data, 0, data.Length);
 
-            // Return bytes.
-            data = new Byte[256];
-            String responseData = String.Empty;
+            //// Return bytes.
+            //data = new Byte[256];
+            //String responseData = String.Empty;
 
-            // Read the first batch of the TcpServer response bytes.
-            Int32 bytes = stream.Read(data, 0, data.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            //// Read the first batch of the TcpServer response bytes.
+            //Int32 bytes = stream.Read(data, 0, data.Length);
+            //responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
-            // Close stream and connection.
-            stream.Close();
-            connection.Close();
+            //// Close stream and connection.
+            //stream.Close();
+            //connection.Close();
         }
 
         public void StartVideoStream(VlcControl ROVStream)

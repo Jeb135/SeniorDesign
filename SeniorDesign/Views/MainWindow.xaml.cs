@@ -30,7 +30,7 @@ namespace SeniorDesign
             //VlcContext.Initialize();
 
             InitializeComponent();
-            ViewModel = new ROVControlsViewModel(ROVStream);
+            ViewModel = new ROVControlsViewModel(/*ROVStream*/);
             DataContext = ViewModel;
         }
     }
