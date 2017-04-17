@@ -8,6 +8,7 @@ using System.Web.Script.Serialization;
 using Vlc.DotNet.Wpf;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.IO;
 
 namespace SeniorDesign.ViewModel
@@ -32,6 +33,10 @@ namespace SeniorDesign.ViewModel
         {
             get
             {
+                if(_block == null)
+                {
+                    _block = new ControlBlock();
+                }
                 return _block;
             }
             set
@@ -81,7 +86,20 @@ namespace SeniorDesign.ViewModel
             {
                 _VerticalSpeed = value;
                 RecalculateMotors();
-                NotifyPropertyChanged("VerticleSpeed");
+                NotifyPropertyChanged("VerticalSpeed");
+            }
+        }
+
+        private bool _Lights;
+        public bool Lights
+        {
+            get
+            {
+                return _Lights;
+            }
+            set
+            {
+                _Lights = value;
             }
         }
 
@@ -90,6 +108,10 @@ namespace SeniorDesign.ViewModel
         {
             get
             {
+                if(_SendControlSignalDispatchTimer == null)
+                {
+                    StartDispatchTimer();
+                }
                 return _SendControlSignalDispatchTimer;
             }
             set
@@ -193,6 +215,45 @@ namespace SeniorDesign.ViewModel
             }
         }
 
+        private ICommand _STOPCommand;
+        public ICommand STOPCommand
+        {
+            get
+            {
+                if(_STOPCommand == null)
+                {
+                    _STOPCommand = new RelayCommand(STOPExecute, CanExecuteSTOPCommand);
+                }
+                return _STOPCommand;
+            }
+        }
+
+        private ICommand _LightsOnCommand;
+        public ICommand LightsOnCommand
+        {
+            get
+            {
+                if(_LightsOnCommand == null)
+                {
+                    _LightsOnCommand = new RelayCommand(LightsOnExecute, CanExecuteLightsOnCommand);
+                }
+                return _LightsOnCommand;
+            }
+        }
+
+        private ICommand _LightsOffCommand;
+        public ICommand LightsOffComamand
+        {
+            get
+            {
+                if(_LightsOffCommand == null)
+                {
+                    _LightsOffCommand = new RelayCommand(LightsOffExecute, CanExecuteLightsOffCommand);
+                }
+                return _LightsOffCommand;
+            }
+        }
+
         private bool CanExecuteConnectWirelessCommand()
         {
             //Conditions on if this command can be executed.
@@ -205,6 +266,24 @@ namespace SeniorDesign.ViewModel
             return true;
         }
 
+        private bool CanExecuteSTOPCommand()
+        {
+            //Conditions on if this command can be executed.
+            return true;
+        }
+
+        private bool CanExecuteLightsOnCommand()
+        {
+            // Can lights be turned on?
+            return true;
+        }
+
+        private bool CanExecuteLightsOffCommand()
+        {
+            // Can lights be turned on?
+            return true;
+        }
+
         public void ConnectWirelessExecute()
         {
             // Attempt to make a connection to the ROV here.
@@ -214,6 +293,24 @@ namespace SeniorDesign.ViewModel
         public void ReturnToSurfaceExecute()
         {
             // Tell the ROV to return to the surface.
+        }
+
+        public void STOPExecute()
+        {
+            // Set all speeds to 0 to make the sub stay where it currently is.
+            ForwardSpeed = 0;
+            TurningAngle = 0;
+            VerticalSpeed = 0;
+        }
+
+        public void LightsOnExecute()
+        {
+            Lights = true;
+        }
+
+        public void LightsOffExecute()
+        {
+            Lights = false;
         }
 
 
@@ -232,6 +329,7 @@ namespace SeniorDesign.ViewModel
             {
                 StartDispatchTimer();
             }
+            EventManager.RegisterClassHandler(typeof(System.Windows.Controls.Control), System.Windows.Controls.Control.KeyDownEvent, new KeyEventHandler(MovementController), true);
         }
 
         public ROVControlsViewModel(VlcControl ROVVideo)
@@ -243,6 +341,7 @@ namespace SeniorDesign.ViewModel
             {
                 StartDispatchTimer();
             }
+            EventManager.RegisterClassHandler(typeof(System.Windows.Controls.Control), System.Windows.Controls.Control.KeyDownEvent, new KeyEventHandler(MovementController), true);
         }
 
         public bool ConnectROV()
@@ -346,6 +445,39 @@ namespace SeniorDesign.ViewModel
                 block.RightHorizontal = ForwardSpeed - TurningAngle;
             }
             block.Vertical = VerticalSpeed;
+        }
+
+        private void MovementController(Object sender, KeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case Key.W:
+                    ForwardSpeed += 10;
+                    break;
+                case Key.A:
+                    TurningAngle += -10;
+                    break;
+                case Key.S:
+                    ForwardSpeed += -10;
+                    break;
+                case Key.D:
+                    TurningAngle += 10;
+                    break;
+                case Key.LeftShift:
+                    VerticalSpeed += 10;
+                    break;
+                case Key.LeftCtrl:
+                    VerticalSpeed += -10;
+                    break;
+                case Key.Space:
+                    STOPExecute();
+                    break;
+                case Key.L:
+                    // Add functionality to turn lights on/off when pressing L.
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

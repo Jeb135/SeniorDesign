@@ -15,12 +15,15 @@
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Return to Surface" Command="{Binding ReturnToSurfaceCommand}" Width="100" Margin="0,5,0,5"/>
+                <Button Content="STOP" Command="{Binding STOPCommand}" Width="100" Margin="0,5,0,5"/>
+                <Button Content="Lights On" Command="{Binding LightsOnCommand}" Width="100" Margin="0,5,0,5"/>
+                <Button Content="Lights Off" Command="{Binding LightsOffCommand}" Width="100" Margin="0,5,0,5"/>
             </StackPanel>
             <StackPanel>
-                <TextBlock>
+                <TextBlock FontWeight="Bold">
                     CONTROLS
                 </TextBlock>
-                <Slider x:Name="ForwardSpeed"  Margin="0, 0, 0, 0" 
+                <Slider x:Name="ForwardSpeed"  Margin="0, 5, 0, 5" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
                     Value="{Binding ForwardSpeed}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
@@ -28,7 +31,7 @@
                 <TextBlock>
                     Forward Speed (%)
                 </TextBlock>
-                <Slider x:Name="TurningAngle"  Margin="0, 0, 0, 0" 
+                <Slider x:Name="TurningAngle"  Margin="0, 5, 0, 5" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
                     Value="{Binding TurningAngle}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
@@ -36,7 +39,7 @@
                 <TextBlock>
                     Left...................Right
                 </TextBlock>
-                <Slider x:Name="VerticalSpeed"  Margin="0, 0, 0, 0" 
+                <Slider x:Name="VerticalSpeed"  Margin="0, 5, 0, 5" 
                     Width="100" Height="100" Orientation="Vertical" HorizontalAlignment="Left" 
                     Value="{Binding VerticalSpeed}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
@@ -47,7 +50,7 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock>Depth</TextBlock>
-                <TextBox IsReadOnly="True"></TextBox>
+                <TextBox IsReadOnly="True" Width="100"></TextBox>
             </StackPanel>
         </StackPanel>
        
