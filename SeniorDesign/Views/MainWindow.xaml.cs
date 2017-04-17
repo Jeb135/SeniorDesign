@@ -31,7 +31,7 @@ namespace SeniorDesign
 
             InitializeComponent();
             ViewModel = new ROVControlsViewModel(/*ROVStream*/);
-            DataContext = ViewModel;
+            this.DataContext = ViewModel;
         }
     }
 }

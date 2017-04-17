@@ -8,8 +8,9 @@ namespace SeniorDesign.Models
 {
     class UDPStatus
     {
+        // This class is useless at the moment.
         // Video bytes
-
+        
         // Depth
         private int _Depth;
         public int Depth

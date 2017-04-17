@@ -22,7 +22,7 @@
                 </TextBlock>
                 <Slider x:Name="ForwardSpeed"  Margin="0, 0, 0, 0" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    Value="{Binding ElementName=ForwardSpeed, Path=ViewModel}" Minimum="-100" Maximum="100" 
+                    Value="{Binding ForwardSpeed}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
                     TickPlacement="BottomRight" TickFrequency="10"/>
                 <TextBlock>
@@ -30,7 +30,7 @@
                 </TextBlock>
                 <Slider x:Name="TurningAngle"  Margin="0, 0, 0, 0" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    Value="0" Minimum="-100" Maximum="100" 
+                    Value="{Binding TurningAngle}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
                     TickPlacement="BottomRight" TickFrequency="10"/>
                 <TextBlock>
@@ -38,13 +38,18 @@
                 </TextBlock>
                 <Slider x:Name="VerticalSpeed"  Margin="0, 0, 0, 0" 
                     Width="100" Height="100" Orientation="Vertical" HorizontalAlignment="Left" 
-                    Value="0" Minimum="-100" Maximum="100" 
+                    Value="{Binding VerticalSpeed}" Minimum="-100" Maximum="100" 
                     SmallChange="10" LargeChange="50"
                     TickPlacement="BottomRight" TickFrequency="10"/>
                 <TextBlock>
                     Vertical Speed (%)
                 </TextBlock>
             </StackPanel>
+            <StackPanel>
+                <TextBlock>Depth</TextBlock>
+                <TextBox IsReadOnly="True"></TextBox>
+            </StackPanel>
         </StackPanel>
+       
     </Grid>
 </Window>
