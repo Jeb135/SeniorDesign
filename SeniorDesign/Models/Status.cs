@@ -9,7 +9,7 @@ namespace SeniorDesign.Models
     enum Status
     {
         Good = 1,
-        NINE11 = 2
+        Bad = 2
 
         // Add other statuses as necessary.
     }

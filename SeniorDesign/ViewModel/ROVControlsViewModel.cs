@@ -473,7 +473,7 @@ namespace SeniorDesign.ViewModel
                     STOPExecute();
                     break;
                 case Key.L:
-                    // Add functionality to turn lights on/off when pressing L.
+                    Lights = !Lights;
                     break;
                 default:
                     break;
