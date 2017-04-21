@@ -4,13 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeniorDesign"
-        xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+        xmlns:WPFMediaKit="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+        xmlns:WPFMediaKit2="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
         mc:Ignorable="d"
         Title="Underwater Robot"
         WindowState="Maximized" d:DesignWidth="1400" d:DesignHeight="1100">
     <Grid>
         <!--<MediaElement Name="stream" Height="720" Width="1280" Margin="54,10,54,240" Source="{Binding ROVVideo}" ></MediaElement>-->
-        <!--<wpf:VlcControl x:Name="ROVStream"/>-->
+        <vlc:VlcControl x:Name="ROVStream"/>
+        <!--<WPFMediaKit:MediaUriElement x:Name="mediaUriElement" Grid.Row="1" Margin="4"></WPFMediaKit:MediaUriElement>-->
         <StackPanel Margin="0,750,0,0" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>

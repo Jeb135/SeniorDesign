@@ -293,6 +293,7 @@ namespace SeniorDesign.ViewModel
         public void ReturnToSurfaceExecute()
         {
             // Tell the ROV to return to the surface.
+            block.status = Status.Bad;
         }
 
         public void STOPExecute()
@@ -428,7 +429,7 @@ namespace SeniorDesign.ViewModel
         private void RecalculateMotors()
         {
             // Super rough calculations of how to handle turning here.
-
+            // This method is very prone to bugs at the moment by overflowing the motor amount.
             // 4-17-16
             // This can most likely be simplified to remove the conditional statement, if more complicated calculations are not added in.
 
@@ -478,6 +479,13 @@ namespace SeniorDesign.ViewModel
                 default:
                     break;
             }
+        }
+
+        private void PrepControlBlock()
+        {
+            RecalculateMotors();
+            block.lights = Lights;
+            block.status = Status.Good;
         }
     }
 }
