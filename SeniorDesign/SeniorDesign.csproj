@@ -53,6 +53,10 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.2225.0\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -81,20 +85,20 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Vlc.DotNet.Core, Version=2.1.130.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.2.1.130\lib\net45\x86\Vlc.DotNet.Core.dll</HintPath>
+    <Reference Include="Vlc.DotNet.Core, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>..\packages\Vlc.DotNet.Core.2.1.134\lib\net45\x86\Vlc.DotNet.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.1.130.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.1.130\lib\net45\x86\Vlc.DotNet.Core.Interops.dll</HintPath>
+    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.1.134\lib\net45\x86\Vlc.DotNet.Core.Interops.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Vlc.DotNet.Forms, Version=2.1.130.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Forms.2.1.130\lib\net45\x86\Vlc.DotNet.Forms.dll</HintPath>
+    <Reference Include="Vlc.DotNet.Forms, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>..\packages\Vlc.DotNet.Forms.2.1.134\lib\net45\x86\Vlc.DotNet.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Vlc.DotNet.Wpf, Version=2.1.130.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Wpf.2.1.130\lib\net45\x86\Vlc.DotNet.Wpf.dll</HintPath>
+    <Reference Include="Vlc.DotNet.Wpf, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>..\packages\Vlc.DotNet.Wpf.2.1.134\lib\net45\x86\Vlc.DotNet.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -125,6 +129,7 @@
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\ControlBlock.cs" />
     <Compile Include="Models\UDPStatus.cs" />
+    <Compile Include="ViewModel\MediaPlayerViewModel.cs" />
     <Compile Include="ViewModel\ROVControlsViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

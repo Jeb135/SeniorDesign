@@ -10,6 +10,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.IO;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace SeniorDesign.ViewModel
 {
@@ -335,8 +338,8 @@ namespace SeniorDesign.ViewModel
 
         public ROVControlsViewModel(VlcControl ROVVideo)
         {
-            server = "";
-            port = 0;
+            server = "169.254.250.128";
+            port = 3000;
             block = new ControlBlock();
             if (ConnectROV())
             {
@@ -405,6 +408,32 @@ namespace SeniorDesign.ViewModel
                 //// Close stream and connection.
                 //stream.Close();
                 //connection.Close();
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(server + ":" + port);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                //string json = JSON.stringify({ "data" : block}); //json.stringify(); json-ify the control block data
+                string json = JsonConvert.SerializeObject(block);
+
+                byte[] data = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = data.Length;
+
+                using (Stream requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(data, 0, data.Length);
+                }
+
+                try
+                {
+                    using (WebResponse response = request.GetResponse())
+                    {
+                        // do stuff with response.
+                    }
+                }
+                catch(WebException ex)
+                {
+                    // Handle web error.
+                }
             }
             catch(Exception ex)
             {

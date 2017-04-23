@@ -4,19 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeniorDesign"
-        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         xmlns:WPFMediaKit="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
-        xmlns:WPFMediaKit2="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
         mc:Ignorable="d"
-        Title="Underwater Robot"
-        WindowState="Maximized" d:DesignWidth="1400" d:DesignHeight="1100">
+        Title="Underwater Robot - Senior Design Team 09"
+        WindowState="Maximized" Width="1400" Height="1100">
     <Grid>
-        <!--<MediaElement Name="stream" Height="720" Width="1280" Margin="54,10,54,240" Source="{Binding ROVVideo}" ></MediaElement>-->
-        <vlc:VlcControl x:Name="ROVStream"/>
-        <!--<WPFMediaKit:MediaUriElement x:Name="mediaUriElement" Grid.Row="1" Margin="4"></WPFMediaKit:MediaUriElement>-->
-        <StackPanel Margin="0,750,0,0" Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="800"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border BorderThickness="5" Grid.Row="0" BorderBrush="Green" Background="LightGray">
+            <WPFMediaKit:MediaUriElement x:Name="ROVStream" Margin="4" Height="720" Width="1280" Loop="True" VideoRenderer="VideoMixingRenderer9"></WPFMediaKit:MediaUriElement>
+        </Border>
+        <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="1">
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
+                <Button Content="Play Stream" Click="OnPlayButtonClick" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Return to Surface" Command="{Binding ReturnToSurfaceCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="STOP" Command="{Binding STOPCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Lights On" Command="{Binding LightsOnCommand}" Width="100" Margin="0,5,0,5"/>
@@ -54,6 +57,8 @@
             <StackPanel>
                 <TextBlock>Depth</TextBlock>
                 <TextBox IsReadOnly="True" Width="100"></TextBox>
+                <TextBlock Margin="0,5,0,5">Server:</TextBlock>
+                <TextBox Width="100"></TextBox>
             </StackPanel>
         </StackPanel>
        
