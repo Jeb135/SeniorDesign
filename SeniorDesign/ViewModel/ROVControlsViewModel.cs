@@ -14,6 +14,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
+
 namespace SeniorDesign.ViewModel
 {
     class ROVControlsViewModel : INotifyPropertyChanged
@@ -58,7 +59,7 @@ namespace SeniorDesign.ViewModel
             set
             {
                 _ForwardSpeed = value;
-                RecalculateMotors();
+                RecalculateControls();
                 NotifyPropertyChanged("ForwardSpeed");
             }
         }
@@ -73,7 +74,7 @@ namespace SeniorDesign.ViewModel
             set
             {
                 _TurningAngle = value;
-                RecalculateMotors();
+                RecalculateControls();
                 NotifyPropertyChanged("TurningAngle");
             }
         }
@@ -88,7 +89,7 @@ namespace SeniorDesign.ViewModel
             set
             {
                 _VerticalSpeed = value;
-                RecalculateMotors();
+                RecalculateControls();
                 NotifyPropertyChanged("VerticalSpeed");
             }
         }
@@ -162,33 +163,46 @@ namespace SeniorDesign.ViewModel
             }
         }
 
-        private string _streamUrl;
-        public string streamUrl
+        private bool _AlreadySentSpecial;
+        public bool AlreadySentSpecial
         {
             get
             {
-                return _streamUrl;
+                return _AlreadySentSpecial;
             }
             set
             {
-                _streamUrl = value;
+                _AlreadySentSpecial = value;
             }
         }
 
-        private Uri _ROVVideo;
-        public Uri ROVVideo
-        {
-            get
-            {
-                if(_ROVVideo == null) { _ROVVideo = new Uri(streamUrl); }
-                return _ROVVideo;
-            }
-            set
-            {
-                _ROVVideo = value;
-                //OnPropertyChanged("something");
-            }
-        }
+        //private string _streamUrl;
+        //public string streamUrl
+        //{
+        //    get
+        //    {
+        //        return _streamUrl;
+        //    }
+        //    set
+        //    {
+        //        _streamUrl = value;
+        //    }
+        //}
+
+        //private Uri _ROVVideo;
+        //public Uri ROVVideo
+        //{
+        //    get
+        //    {
+        //        if(_ROVVideo == null) { _ROVVideo = new Uri(streamUrl); }
+        //        return _ROVVideo;
+        //    }
+        //    set
+        //    {
+        //        _ROVVideo = value;
+        //        //OnPropertyChanged("something");
+        //    }
+        //}
         #endregion
 
         #region Commands
@@ -257,6 +271,19 @@ namespace SeniorDesign.ViewModel
             }
         }
 
+        private ICommand _DiveCommand;
+        public ICommand DiveCommand
+        {
+            get
+            {
+                if(_DiveCommand == null)
+                {
+                    _DiveCommand = new RelayCommand(DiveExecute, CanExecuteDiveCommand);
+                }
+                return _DiveCommand;
+            }
+        }
+
         private bool CanExecuteConnectWirelessCommand()
         {
             //Conditions on if this command can be executed.
@@ -287,6 +314,11 @@ namespace SeniorDesign.ViewModel
             return true;
         }
 
+        private bool CanExecuteDiveCommand()
+        {
+            return true;
+        }
+
         public void ConnectWirelessExecute()
         {
             // Attempt to make a connection to the ROV here.
@@ -295,8 +327,10 @@ namespace SeniorDesign.ViewModel
 
         public void ReturnToSurfaceExecute()
         {
+            // The API Does not support this, so do nothing.
             // Tell the ROV to return to the surface.
-            block.status = Status.Bad;
+            //block.status = Status.Bad;
+            block.Special = "Surface";
         }
 
         public void STOPExecute()
@@ -317,6 +351,11 @@ namespace SeniorDesign.ViewModel
             Lights = false;
         }
 
+        public void DiveExecute()
+        {
+            block.Special = "Dive";
+        }
+
 
         // Add Commands for other buttons.
         // To be added:
@@ -326,21 +365,10 @@ namespace SeniorDesign.ViewModel
 
         public ROVControlsViewModel()
         {
-            server = "";
-            port = 0;
-            block = new ControlBlock();
-            if (ConnectROV())
-            {
-                StartDispatchTimer();
-            }
-            EventManager.RegisterClassHandler(typeof(System.Windows.Controls.Control), System.Windows.Controls.Control.KeyDownEvent, new KeyEventHandler(MovementController), true);
-        }
-
-        public ROVControlsViewModel(VlcControl ROVVideo)
-        {
             server = "169.254.250.128";
             port = 3000;
             block = new ControlBlock();
+            AlreadySentSpecial = false;
             if (ConnectROV())
             {
                 StartDispatchTimer();
@@ -351,14 +379,12 @@ namespace SeniorDesign.ViewModel
         public bool ConnectROV()
         {
             // Return if connection was successful or not.
-            ForwardSpeed = 0;
+            // For testing.
+            _SendControlSignal();
             if (!connected)
             {
-                // Attempt to make TCP connection to ROV. 
-                
-                // If successful in connecting, start dispatch timer, but check to make sure its not started already.
-                // Perform check to see if already running this timer.
                 StartDispatchTimer();
+                
                 connected = true;
             }
             else
@@ -370,46 +396,23 @@ namespace SeniorDesign.ViewModel
 
         public void StartDispatchTimer()
         {
-            //Uncomment to start dispatch timer.
-            SendControlSignalDispatchTimer = new DispatcherTimer();
-            SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
-            SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            SendControlSignalDispatchTimer.Start();
+            //SendControlSignalDispatchTimer = new DispatcherTimer();
+            //SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
+            //SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            //SendControlSignalDispatchTimer.Start();
         }
 
         public void SendControlSignal(object sender, EventArgs e)
         {
-            // This currently doesn't work. Uncomment to debug/fix.
+            _SendControlSignal();
+        }
 
+        public void _SendControlSignal()
+        {
             try
             {
-                ////Pack up the control block and send it off with TCP connection here.
-                //TcpClient connection = new TcpClient(server, port);
-
-                //// Configure connection content.
-                //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //string message = serializer.Serialize(block);
-                ////string message = System.Runtime.Serialization.JSON.stringify(block);
-                //Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-
-                //NetworkStream stream = connection.GetStream();
-
-                //// Send the message to the connected TcpServer. 
-                //stream.Write(data, 0, data.Length);
-
-                //// Return bytes.
-                //data = new Byte[256];
-                //String responseData = String.Empty;
-
-                //// Read the first batch of the TcpServer response bytes.
-                //Int32 bytes = stream.Read(data, 0, data.Length);
-                //responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-
-                //// Close stream and connection.
-                //stream.Close();
-                //connection.Close();
-
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(server + ":" + port);
+                string url = "http://" + server + ":" + port + "/";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 //string json = JSON.stringify({ "data" : block}); //json.stringify(); json-ify the control block data
@@ -423,19 +426,17 @@ namespace SeniorDesign.ViewModel
                     requestStream.Write(data, 0, data.Length);
                 }
 
-                try
+                using (WebResponse response = request.GetResponse())
                 {
-                    using (WebResponse response = request.GetResponse())
-                    {
-                        // do stuff with response.
-                    }
-                }
-                catch(WebException ex)
-                {
-                    // Handle web error.
+                    // Do something with returning result if necessary.
+                    string body = "";
                 }
             }
-            catch(Exception ex)
+            catch (WebException ex)
+            {
+                // Bad Gateway/No connection/Timeout error would cause this.
+            }
+            catch (Exception ex)
             {
                 // Launch dialog box with error here.
             }
@@ -455,26 +456,92 @@ namespace SeniorDesign.ViewModel
         //    e.VlcLibDirectory = new DirectoryInfo(@"C:\Program Files (x86)\VideoLAN\VLC\");
         //}
 
-        private void RecalculateMotors()
+        private void RecalculateControls()
         {
             // Super rough calculations of how to handle turning here.
             // This method is very prone to bugs at the moment by overflowing the motor amount.
-            // 4-17-16
-            // This can most likely be simplified to remove the conditional statement, if more complicated calculations are not added in.
 
-            if (TurningAngle >= 0)
+            //if (TurningAngle >= 0)
+            //{
+            //    // Turn angle up to 100, go right, which means engage left faster than right.
+            //    block.LeftHorizontal = ForwardSpeed + TurningAngle;
+            //    block.RightHorizontal = ForwardSpeed - TurningAngle;
+            //}
+            //else
+            //{
+            //    // Turn angle up to -100, go left, which means engage right faster than left.
+            //    block.LeftHorizontal = ForwardSpeed + TurningAngle;
+            //    block.RightHorizontal = ForwardSpeed - TurningAngle;
+            //}
+            //block.Vertical = VerticalSpeed;
+
+            // Interpret direction and speed controls into something the API can read correctly.
+            if (TurningAngle != 0)
             {
-                // Turn angle up to 100, go right, which means engage left faster than right.
-                block.LeftHorizontal = ForwardSpeed + TurningAngle;
-                block.RightHorizontal = ForwardSpeed - TurningAngle;
+                if(TurningAngle > 0)
+                {
+                    block.Direction = "Right";
+                    block.Speed = ForwardSpeed;
+                }
+                else
+                {
+                    block.Direction = "Left";
+                    block.Speed = ForwardSpeed;
+                }
             }
             else
             {
-                // Turn angle up to -100, go left, which means engage right faster than left.
-                block.LeftHorizontal = ForwardSpeed + TurningAngle;
-                block.RightHorizontal = ForwardSpeed - TurningAngle;
+                if (ForwardSpeed > 0)
+                {
+                    block.Direction = "Forward";
+                    block.Speed = ForwardSpeed;
+                }
+                else if (ForwardSpeed < 0)
+                {
+                    block.Direction = "Backward";
+                    block.Speed = ForwardSpeed;
+                }
+                else
+                {
+                    if (VerticalSpeed != 0)
+                    {
+                        if (VerticalSpeed > 0)
+                        {
+                            block.Direction = "Up";
+                            block.Speed = 5;
+                        }
+                        else
+                        {
+                            block.Direction = "Down";
+                            block.Speed = 5;
+                        }
+                    }
+                    else
+                    {
+                        block.Direction = "None";
+                        block.Speed = 0;
+                    }
+
+                }
             }
-            block.Vertical = VerticalSpeed;
+
+            // block.Special interpretation. flip flop between AlreadySentSpecial so that it is only sent once.
+            if (AlreadySentSpecial)
+            {
+                block.Special = "none";
+                AlreadySentSpecial = false;
+            }
+
+            if(block.Special != "none")
+            {
+                AlreadySentSpecial = true;
+            }
+
+            // Check to make sure Speed is non-negative.
+            if(block.Speed < 0)
+            {
+                block.Speed = block.Speed * -1;
+            }
         }
 
         private void MovementController(Object sender, KeyEventArgs e)
@@ -485,13 +552,13 @@ namespace SeniorDesign.ViewModel
                     ForwardSpeed += 10;
                     break;
                 case Key.A:
-                    TurningAngle += -10;
+                    TurningAngle += -1;
                     break;
                 case Key.S:
                     ForwardSpeed += -10;
                     break;
                 case Key.D:
-                    TurningAngle += 10;
+                    TurningAngle += 1;
                     break;
                 case Key.LeftShift:
                     VerticalSpeed += 10;
@@ -508,13 +575,6 @@ namespace SeniorDesign.ViewModel
                 default:
                     break;
             }
-        }
-
-        private void PrepControlBlock()
-        {
-            RecalculateMotors();
-            block.lights = Lights;
-            block.status = Status.Good;
         }
     }
 }

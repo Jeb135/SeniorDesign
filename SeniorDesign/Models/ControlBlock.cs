@@ -8,10 +8,15 @@ namespace SeniorDesign.Models
 {
     class ControlBlock
     {
-        public Status status;
-        public bool lights;
-        public int LeftHorizontal;
-        public int RightHorizontal;
-        public int Vertical;
+        public string Direction;
+        public int Speed;
+        public string Special;
+
+        public ControlBlock()
+        {
+            this.Direction = "Forward";
+            this.Speed = 0;
+            this.Special = "none";
+        }
     }
 }

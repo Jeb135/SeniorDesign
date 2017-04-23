@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeniorDesign"
         xmlns:WPFMediaKit="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         mc:Ignorable="d"
         Title="Underwater Robot - Senior Design Team 09"
         WindowState="Maximized" Width="1400" Height="1100">
@@ -13,13 +14,19 @@
             <RowDefinition Height="800"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border BorderThickness="5" Grid.Row="0" BorderBrush="Green" Background="LightGray">
-            <WPFMediaKit:MediaUriElement x:Name="ROVStream" Margin="4" Height="720" Width="1280" Loop="True" VideoRenderer="VideoMixingRenderer9"></WPFMediaKit:MediaUriElement>
+        <Border BorderThickness="5" Grid.Row="0" BorderBrush="Green">
+            <WPFMediaKit:MediaUriElement x:Name="ROVStream" 
+                                         Margin="4" 
+                                         Height="720" 
+                                         Width="1280"
+                                         Source="rtsp://169.254.250.128:8554/"></WPFMediaKit:MediaUriElement>
+            <!--<vlc:VlcControl  Grid.Row="0" x:Name="myControl"/>-->
         </Border>
         <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="1">
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Play Stream" Click="OnPlayButtonClick" Width="100" Margin="0,5,0,5"/>
+                <Button Content="Dive" Command="{Binding DiveCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Return to Surface" Command="{Binding ReturnToSurfaceCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="STOP" Command="{Binding STOPCommand}" Width="100" Margin="0,5,0,5"/>
                 <Button Content="Lights On" Command="{Binding LightsOnCommand}" Width="100" Margin="0,5,0,5"/>
@@ -31,25 +38,25 @@
                 </TextBlock>
                 <Slider x:Name="ForwardSpeed"  Margin="0, 5, 0, 5" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    Value="{Binding ForwardSpeed}" Minimum="-100" Maximum="100" 
-                    SmallChange="10" LargeChange="50"
-                    TickPlacement="BottomRight" TickFrequency="10"/>
+                    Value="{Binding ForwardSpeed}" Minimum="-10" Maximum="10" 
+                    SmallChange="1" LargeChange="5"
+                    TickPlacement="BottomRight" TickFrequency="1"/>
                 <TextBlock>
                     Forward Speed (%)
                 </TextBlock>
                 <Slider x:Name="TurningAngle"  Margin="0, 5, 0, 5" 
                     Width="100" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    Value="{Binding TurningAngle}" Minimum="-100" Maximum="100" 
-                    SmallChange="10" LargeChange="50"
-                    TickPlacement="BottomRight" TickFrequency="10"/>
+                    Value="{Binding TurningAngle}" Minimum="-1" Maximum="1" 
+                    SmallChange="1" LargeChange="1"
+                    TickPlacement="BottomRight" TickFrequency="1"/>
                 <TextBlock>
                     Left...................Right
                 </TextBlock>
                 <Slider x:Name="VerticalSpeed"  Margin="0, 5, 0, 5" 
                     Width="100" Height="100" Orientation="Vertical" HorizontalAlignment="Left" 
-                    Value="{Binding VerticalSpeed}" Minimum="-100" Maximum="100" 
-                    SmallChange="10" LargeChange="50"
-                    TickPlacement="BottomRight" TickFrequency="10"/>
+                    Value="{Binding VerticalSpeed}" Minimum="-1" Maximum="1" 
+                    SmallChange="1" LargeChange="1"
+                    TickPlacement="BottomRight" TickFrequency="1"/>
                 <TextBlock>
                     Vertical Speed (%)
                 </TextBlock>
