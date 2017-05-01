@@ -8,20 +8,21 @@
         xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         mc:Ignorable="d"
         Title="Underwater Robot - Senior Design Team 09"
-        WindowState="Maximized" Width="1400" Height="1100">
+        WindowState="Minimized" Width="400" Height="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="800"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border BorderThickness="5" Grid.Row="0" BorderBrush="Green">
+        <!--<Border BorderThickness="5" Grid.Row="0" BorderBrush="Green">-->
             <WPFMediaKit:MediaUriElement x:Name="ROVStream" 
                                          Margin="4" 
-                                         Height="720" 
-                                         Width="1280"
+                                         Height="0" 
+                                         Width="0"
                                          Source="rtsp://169.254.250.128:8554/"></WPFMediaKit:MediaUriElement>
+        <!--height 720 width 1280-->
             <!--<vlc:VlcControl  Grid.Row="0" x:Name="myControl"/>-->
-        </Border>
+        <!--</Border>-->
         <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="1">
             <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                 <Button Content="Connect" Command="{Binding ConnectWirelessCommand}" Width="100" Margin="0,5,0,5"/>
@@ -62,10 +63,10 @@
                 </TextBlock>
             </StackPanel>
             <StackPanel>
-                <TextBlock>Depth</TextBlock>
-                <TextBox IsReadOnly="True" Width="100"></TextBox>
-                <TextBlock Margin="0,5,0,5">Server:</TextBlock>
-                <TextBox Width="100"></TextBox>
+                <TextBlock>Depth (ft)</TextBlock>
+                <TextBox IsReadOnly="True" Width="100">0</TextBox>
+                <!--<TextBlock Margin="0,5,0,5">Server:</TextBlock>
+                <TextBox Width="100"></TextBox>-->
             </StackPanel>
         </StackPanel>
        

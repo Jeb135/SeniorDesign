@@ -58,7 +58,18 @@ namespace SeniorDesign.ViewModel
             }
             set
             {
-                _ForwardSpeed = value;
+                if (value > 10)
+                {
+                    _ForwardSpeed = 10;
+                }
+                else if (value < -10)
+                {
+                    _ForwardSpeed = -10;
+                }
+                else
+                {
+                    _ForwardSpeed = value;
+                }
                 RecalculateControls();
                 NotifyPropertyChanged("ForwardSpeed");
             }
@@ -73,7 +84,18 @@ namespace SeniorDesign.ViewModel
             }
             set
             {
-                _TurningAngle = value;
+                if (value > 1)
+                {
+                    _TurningAngle = 1;
+                }
+                else if (value < -1)
+                {
+                    _TurningAngle = -1;
+                }
+                else
+                {
+                    _TurningAngle = value;
+                }
                 RecalculateControls();
                 NotifyPropertyChanged("TurningAngle");
             }
@@ -88,7 +110,18 @@ namespace SeniorDesign.ViewModel
             }
             set
             {
-                _VerticalSpeed = value;
+                if (value > 1)
+                {
+                    _VerticalSpeed = 1;
+                }
+                else if (value < -1)
+                {
+                    _VerticalSpeed = -1;
+                }
+                else
+                {
+                    _VerticalSpeed = value;
+                }
                 RecalculateControls();
                 NotifyPropertyChanged("VerticalSpeed");
             }
@@ -175,34 +208,6 @@ namespace SeniorDesign.ViewModel
                 _AlreadySentSpecial = value;
             }
         }
-
-        //private string _streamUrl;
-        //public string streamUrl
-        //{
-        //    get
-        //    {
-        //        return _streamUrl;
-        //    }
-        //    set
-        //    {
-        //        _streamUrl = value;
-        //    }
-        //}
-
-        //private Uri _ROVVideo;
-        //public Uri ROVVideo
-        //{
-        //    get
-        //    {
-        //        if(_ROVVideo == null) { _ROVVideo = new Uri(streamUrl); }
-        //        return _ROVVideo;
-        //    }
-        //    set
-        //    {
-        //        _ROVVideo = value;
-        //        //OnPropertyChanged("something");
-        //    }
-        //}
         #endregion
 
         #region Commands
@@ -396,10 +401,10 @@ namespace SeniorDesign.ViewModel
 
         public void StartDispatchTimer()
         {
-            //SendControlSignalDispatchTimer = new DispatcherTimer();
-            //SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
-            //SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            //SendControlSignalDispatchTimer.Start();
+            SendControlSignalDispatchTimer = new DispatcherTimer();
+            SendControlSignalDispatchTimer.Tick += new EventHandler(SendControlSignal);
+            SendControlSignalDispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+            SendControlSignalDispatchTimer.Start();
         }
 
         public void SendControlSignal(object sender, EventArgs e)
@@ -411,6 +416,7 @@ namespace SeniorDesign.ViewModel
         {
             try
             {
+                RecalculateControls();
                 string url = "http://" + server + ":" + port + "/";
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
@@ -442,39 +448,8 @@ namespace SeniorDesign.ViewModel
             }
         }
 
-        public void StartVideoStream(VlcControl ROVStream)
-        {
-            ////ROVStream.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
-            //ROVStream.MediaPlayer.EndInit();
-            ////ROVStream.MediaPlayer.Play(new Uri("url of your stream"));
-            //ROVStream.MediaPlayer.Play(ROVVideo);
-        }
-
-        //private void OnVlcControlNeedsLibDirectory(object sender, VlcLibDirectoryNeededEventArgs e)
-        //{
-        //    // path to VLC installation (don't hardcode in real usage, that is just for example)
-        //    e.VlcLibDirectory = new DirectoryInfo(@"C:\Program Files (x86)\VideoLAN\VLC\");
-        //}
-
         private void RecalculateControls()
         {
-            // Super rough calculations of how to handle turning here.
-            // This method is very prone to bugs at the moment by overflowing the motor amount.
-
-            //if (TurningAngle >= 0)
-            //{
-            //    // Turn angle up to 100, go right, which means engage left faster than right.
-            //    block.LeftHorizontal = ForwardSpeed + TurningAngle;
-            //    block.RightHorizontal = ForwardSpeed - TurningAngle;
-            //}
-            //else
-            //{
-            //    // Turn angle up to -100, go left, which means engage right faster than left.
-            //    block.LeftHorizontal = ForwardSpeed + TurningAngle;
-            //    block.RightHorizontal = ForwardSpeed - TurningAngle;
-            //}
-            //block.Vertical = VerticalSpeed;
-
             // Interpret direction and speed controls into something the API can read correctly.
             if (TurningAngle != 0)
             {
@@ -549,22 +524,22 @@ namespace SeniorDesign.ViewModel
             switch(e.Key)
             {
                 case Key.W:
-                    ForwardSpeed += 10;
+                    ForwardSpeed += 5;
                     break;
                 case Key.A:
                     TurningAngle += -1;
                     break;
                 case Key.S:
-                    ForwardSpeed += -10;
+                    ForwardSpeed += -5;
                     break;
                 case Key.D:
                     TurningAngle += 1;
                     break;
                 case Key.LeftShift:
-                    VerticalSpeed += 10;
+                    VerticalSpeed += 1;
                     break;
                 case Key.LeftCtrl:
-                    VerticalSpeed += -10;
+                    VerticalSpeed += -1;
                     break;
                 case Key.Space:
                     STOPExecute();

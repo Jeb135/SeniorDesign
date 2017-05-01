@@ -36,6 +36,7 @@ namespace SeniorDesign
                 //ROVStream.Source = new Uri("rtsp://169.254.250.129:8554/");
 
                 this.Closing += MainWindow_Closing;
+                Dispatcher.UnhandledException += UnhandledExceptionHandler;
             }
             catch(Exception ex)
             {
@@ -60,6 +61,11 @@ namespace SeniorDesign
             {
                 MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
             }
+        }
+
+        private void UnhandledExceptionHandler(object sender, EventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("An unhandled Exception occurred.", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
         }
 
 
